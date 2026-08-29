@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://byc4m6m4oo8f4"]
+
+[ext_resource type="PackedScene" uid="uid://c7ba54wp3rq6i" path="res://scenes/Player.tscn" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://cm8inny1n8jn8" path="res://scenes/VirtualJoystick.tscn" id="2_sugp2"]
+
+[node name="main" type="Node2D" unique_id=359996030]
+
+[node name="player" parent="." unique_id=886766671 instance=ExtResource("1_0wfyh")]
+joystick_path = NodePath("../CanvasLayer/VirtualJoystick")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1135660153]
+
+[node name="VirtualJoystick" parent="CanvasLayer" unique_id=378260171 instance=ExtResource("2_sugp2")]
+offset_left = -253.57605
+offset_top = -82.90402
+offset_right = -53.57605
+offset_bottom = 117.09598

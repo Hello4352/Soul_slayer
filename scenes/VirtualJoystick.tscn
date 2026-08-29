@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cm8inny1n8jn8"]
+
+[ext_resource type="Script" uid="uid://cf8eqx1tqp40a" path="res://virtual_joystick.gd" id="1_pr5we"]
+
+[node name="VirtualJoystick" type="Control" unique_id=378260171]
+layout_mode = 3
+anchor_left = 0.813
+anchor_top = 0.39800003
+anchor_right = 0.813
+anchor_bottom = 0.39800003
+offset_left = -524.57605
+offset_top = -199.90402
+offset_right = -324.57605
+offset_bottom = 0.09597778
+script = ExtResource("1_pr5we")
