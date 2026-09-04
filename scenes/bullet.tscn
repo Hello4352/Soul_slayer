@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cq1ww0rb3cmyl"]
+
+[ext_resource type="Script" uid="uid://yhlbhm2frvsi" path="res://scripts/bullet.gd" id="1_y25gk"]
+[ext_resource type="Texture2D" uid="uid://beomlsv2impdt" path="res://icon.svg" id="2_l5glv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g7b7a"]
+radius = 8.0
+
+[node name="bullet" type="Area2D" unique_id=463514320]
+collision_mask = 7
+script = ExtResource("1_y25gk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1024519419]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_l5glv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1466478465]
+shape = SubResource("CircleShape2D_g7b7a")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=183709406]

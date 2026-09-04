@@ -1,0 +1,251 @@
+[gd_scene format=3 uid="uid://bk4nqsglof8ya"]
+
+[ext_resource type="PackedScene" uid="uid://c7ba54wp3rq6i" path="res://scenes/Player.tscn" id="1_5gu6x"]
+[ext_resource type="PackedScene" uid="uid://cm8inny1n8jn8" path="res://scenes/VirtualJoystick.tscn" id="2_q60fs"]
+[ext_resource type="Script" uid="uid://kdkekmwra80a" path="res://scripts/character_select_panel.gd" id="3_pc087"]
+[ext_resource type="Script" uid="uid://b8284q40nk4d4" path="res://scenes/character_select_zone.gd" id="3_q60fs"]
+[ext_resource type="Script" uid="uid://ccxkefqa64hvu" path="res://scripts/weapon_select_panel.gd" id="4_pc087"]
+[ext_resource type="Script" uid="uid://dw3vb0q4pclq0" path="res://scripts/weapon_select_zone.gd" id="6_apkv3"]
+[ext_resource type="Script" uid="uid://bpiryd1m4gxau" path="res://scripts/game_start_zone.gd" id="7_omrgh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g7b7a"]
+size = Vector2(1600, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gyc6d"]
+size = Vector2(1600, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6qx4q"]
+size = Vector2(20, 800)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqkgv"]
+size = Vector2(20, 800)
+
+[sub_resource type="LabelSettings" id="LabelSettings_g7b7a"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gyc6d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrv66"]
+size = Vector2(130, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bpo87"]
+size = Vector2(130, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wao0y"]
+size = Vector2(100, 100)
+
+[node name="Lobby" type="Node2D" unique_id=604630192]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=452809459]
+custom_minimum_size = Vector2(1600, 800)
+anchors_preset = -1
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.46644112, 0.46644112, 0.46644112, 1)
+
+[node name="Walltop" type="StaticBody2D" parent="." unique_id=1548454491]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walltop" unique_id=2119827490]
+position = Vector2(800, 0)
+shape = SubResource("RectangleShape2D_g7b7a")
+debug_color = Color(15.232984, 15.232984, 15.232984, 1)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walltop" unique_id=1832577255]
+position = Vector2(800, 800)
+shape = SubResource("RectangleShape2D_gyc6d")
+debug_color = Color(0.07058824, 0.07058824, 0.07058824, 1)
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Walltop" unique_id=811381361]
+position = Vector2(0, 400)
+shape = SubResource("RectangleShape2D_6qx4q")
+debug_color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Walltop" unique_id=1668785538]
+position = Vector2(1600, 400)
+shape = SubResource("RectangleShape2D_hqkgv")
+debug_color = Color(0, 0, 0, 1)
+
+[node name="player" parent="." unique_id=886766671 instance=ExtResource("1_5gu6x")]
+position = Vector2(808, 387)
+joystick_path = NodePath("../CanvasLayer/VirtualJoystick")
+attack_button_path = NodePath("../CanvasLayer/Button")
+
+[node name="Camera2D" type="Camera2D" parent="player" unique_id=1775126971]
+position_smoothing_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1117125302]
+
+[node name="VirtualJoystick" parent="CanvasLayer" unique_id=378260171 instance=ExtResource("2_q60fs")]
+offset_left = -1054.576
+offset_top = 179.09598
+offset_right = -854.57605
+offset_bottom = 379.09598
+
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=657737807]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -259.0
+offset_top = -135.0
+offset_right = -28.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "공격"
+
+[node name="CharacterSelectPanel" type="Panel" parent="CanvasLayer" unique_id=638290587]
+visible = false
+top_level = true
+light_mask = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_pc087")
+
+[node name="Label" type="Label" parent="CanvasLayer/CharacterSelectPanel" unique_id=1551387620]
+layout_mode = 0
+offset_left = 600.0
+offset_right = 737.0
+offset_bottom = 24.0
+text = "캐릭터를 선택하세요"
+label_settings = SubResource("LabelSettings_g7b7a")
+
+[node name="SelectDefaultButton" type="Button" parent="CanvasLayer/CharacterSelectPanel" unique_id=1301356368]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 400.0
+offset_right = 386.0
+offset_bottom = 432.0
+text = "기본"
+
+[node name="SelectTankButton" type="Button" parent="CanvasLayer/CharacterSelectPanel" unique_id=266744814]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 400.0
+offset_right = 486.0
+offset_bottom = 432.0
+text = "탱커"
+
+[node name="SelectSpeedyButton" type="Button" parent="CanvasLayer/CharacterSelectPanel" unique_id=1978198472]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 400.0
+offset_right = 586.0
+offset_bottom = 432.0
+text = "스피드"
+
+[node name="SelectGlassCannonButton" type="Button" parent="CanvasLayer/CharacterSelectPanel" unique_id=485097803]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 400.0
+offset_right = 686.0
+offset_bottom = 432.0
+text = "유리 대포"
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/CharacterSelectPanel" unique_id=592278565]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 500.0
+offset_right = 700.0
+offset_bottom = 550.0
+text = "닫기"
+icon = SubResource("ViewportTexture_gyc6d")
+clip_text = true
+
+[node name="WeaponSelectPanel" type="Panel" parent="CanvasLayer" unique_id=2047268497]
+visible = false
+light_mask = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_pc087")
+
+[node name="Label" type="Label" parent="CanvasLayer/WeaponSelectPanel" unique_id=1700234029]
+layout_mode = 0
+offset_left = 490.0
+offset_right = 612.0
+offset_bottom = 24.0
+text = "무기를 선택하세요"
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/WeaponSelectPanel" unique_id=387431588]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 500.0
+offset_right = 600.0
+offset_bottom = 532.0
+text = "닫기"
+
+[node name="PistolButton" type="Button" parent="CanvasLayer/WeaponSelectPanel" unique_id=472048917]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 400.0
+offset_right = 338.0
+offset_bottom = 432.0
+text = "권총"
+
+[node name="ShotgunButton" type="Button" parent="CanvasLayer/WeaponSelectPanel" unique_id=425897127]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 400.0
+offset_right = 538.0
+offset_bottom = 432.0
+text = "샷건"
+
+[node name="SniperButton" type="Button" parent="CanvasLayer/WeaponSelectPanel" unique_id=1698462915]
+layout_mode = 0
+offset_left = 700.0
+offset_top = 400.0
+offset_right = 753.0
+offset_bottom = 432.0
+text = "저격총"
+
+[node name="CharacterSelectZone" type="Area2D" parent="." unique_id=498964927]
+collision_layer = 3
+script = ExtResource("3_q60fs")
+panel_path = NodePath("../CanvasLayer/CharacterSelectPanel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectZone" unique_id=759644030]
+position = Vector2(150, 200)
+shape = SubResource("RectangleShape2D_xrv66")
+
+[node name="ColorRect" type="ColorRect" parent="CharacterSelectZone" unique_id=837417323]
+anchors_preset = -1
+offset_left = 83.0
+offset_top = 137.0
+offset_right = 213.0
+offset_bottom = 267.0
+
+[node name="WeaponSelectZone" type="Area2D" parent="." unique_id=2049365803]
+collision_layer = 3
+script = ExtResource("6_apkv3")
+panel_path = NodePath("../CanvasLayer/WeaponSelectPanel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponSelectZone" unique_id=1312635502]
+position = Vector2(150, 500)
+shape = SubResource("RectangleShape2D_bpo87")
+
+[node name="ColorRect" type="ColorRect" parent="WeaponSelectZone" unique_id=1106917179]
+offset_left = 83.0
+offset_top = 435.0
+offset_right = 213.0
+offset_bottom = 565.0
+
+[node name="GameStartZone" type="Area2D" parent="." unique_id=1728153679]
+collision_layer = 3
+script = ExtResource("7_omrgh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameStartZone" unique_id=1090334317]
+position = Vector2(800, 140)
+shape = SubResource("RectangleShape2D_wao0y")
+
+[node name="ColorRect" type="ColorRect" parent="GameStartZone" unique_id=1858792573]
+offset_left = 750.0
+offset_top = 88.0
+offset_right = 850.0
+offset_bottom = 188.0

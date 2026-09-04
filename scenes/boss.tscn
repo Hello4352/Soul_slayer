@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://coujeh1y45br"]
+
+[ext_resource type="Script" uid="uid://c6r8bke2eqhgx" path="res://scripts/boss_enemy.gd" id="1_neq0i"]
+[ext_resource type="Texture2D" uid="uid://beomlsv2impdt" path="res://icon.svg" id="2_jncid"]
+[ext_resource type="PackedScene" uid="uid://cq1ww0rb3cmyl" path="res://scenes/bullet.tscn" id="2_qnbj4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g7b7a"]
+radius = 61.81424
+
+[node name="Boss" type="CharacterBody2D" unique_id=1872970036]
+script = ExtResource("1_neq0i")
+bullet_scene = ExtResource("2_qnbj4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=467501307]
+texture = ExtResource("2_jncid")
+flip_v = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1880916958]
+shape = SubResource("CircleShape2D_g7b7a")

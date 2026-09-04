@@ -1,0 +1,157 @@
+extends Node
+
+@export var clear_label_path: NodePath
+@export var return_button_path: NodePath
+@export var room_scene: PackedScene
+@export var door_scene: PackedScene
+@export var enemy_scene: PackedScene
+@export var ranged_enemy_scene: PackedScene
+@export var player_path: NodePath
+@export var room_container_path: NodePath
+
+const ROOM_SIZE = 800
+const TARGET_ROOM_COUNT = 6
+
+var rooms = {}
+var room_nodes = {}
+var doors = {}
+var current_room_key = Vector2i.ZERO
+var cleared_rooms = {}
+var visited_rooms = {}
+var stage_cleared = false
+
+func _ready():
+	get_node(return_button_path).pressed.connect(_on_return_pressed)
+	generate_dungeon()
+	build_dungeon()
+
+	var player = get_node(player_path)
+	player.global_position = room_nodes[Vector2i.ZERO].get_node("PlayerSpawn").global_position
+
+	call_deferred("enter_room", Vector2i.ZERO)
+
+func generate_dungeon():
+	rooms.clear()
+	var start = Vector2i.ZERO
+	rooms[start] = true
+	var frontier = [start]
+	var directions = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+
+	while rooms.size() < TARGET_ROOM_COUNT and frontier.size() > 0:
+		var from = frontier[randi() % frontier.size()]
+		directions.shuffle()
+		var made_room = false
+		for dir in directions:
+			var next = from + dir
+			if not rooms.has(next):
+				rooms[next] = true
+				frontier.append(next)
+				made_room = true
+				break
+		if not made_room:
+			frontier.erase(from)
+
+func build_dungeon():
+	for key in rooms.keys():
+		var room = room_scene.instantiate()
+		get_node(room_container_path).add_child(room)
+		room.position = Vector2(key.x * ROOM_SIZE, key.y * ROOM_SIZE)
+		room_nodes[key] = room
+		room.get_node("RoomArea").body_entered.connect(_on_room_area_entered.bind(key))
+
+	for key in rooms.keys():
+		_try_place_door(key, key + Vector2i.UP, "DoorSlotTop")
+		_try_place_door(key, key + Vector2i.DOWN, "DoorSlotBottom")
+		_try_place_door(key, key + Vector2i.LEFT, "DoorSlotLeft")
+		_try_place_door(key, key + Vector2i.RIGHT, "DoorSlotRight")
+
+func _try_place_door(from_key, to_key, slot_name):
+	var pair_key = str(from_key) + "_" + str(to_key)
+	var reverse_key = str(to_key) + "_" + str(from_key)
+	if doors.has(pair_key) or doors.has(reverse_key):
+		return
+	if not rooms.has(to_key):
+		return
+	var room = room_nodes[from_key]
+	var slot = room.get_node(slot_name)
+	var door = door_scene.instantiate()
+	get_node(room_container_path).add_child(door)
+	door.global_position = slot.global_position
+	if slot_name == "DoorSlotLeft" or slot_name == "DoorSlotRight":
+		door.rotation_degrees = 90
+	door.set_open(false)
+	doors[pair_key] = door
+
+func _on_room_area_entered(body, key):
+	if not body.is_in_group("player"):
+		return
+	enter_room(key)
+
+func enter_room(key: Vector2i):
+	current_room_key = key
+	if cleared_rooms.has(key):
+		return
+	if visited_rooms.has(key):
+		return
+	visited_rooms[key] = true
+
+	_lock_doors_around(key, true)
+	_spawn_enemies_for_room(room_nodes[key])
+
+func _lock_doors_around(key, locked):
+	for pair_key in doors.keys():
+		if pair_key.find(str(key)) != -1:
+			doors[pair_key].set_open(not locked)
+
+func _process(_delta):
+	if stage_cleared:
+		return
+	if cleared_rooms.has(current_room_key):
+		return
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	if enemies.size() == 0 and visited_rooms.has(current_room_key):
+		_on_room_cleared()
+
+func _on_room_cleared():
+	cleared_rooms[current_room_key] = true
+	_lock_doors_around(current_room_key, false)
+	if cleared_rooms.size() >= rooms.size():
+		stage_cleared = true
+		get_node(clear_label_path).visible = true
+		get_node(return_button_path).visible = true
+
+func _spawn_enemies_for_room(room):
+	var spawn_points = []
+	for i in range(1, 5):
+		spawn_points.append(room.get_node("SpawnPoint" + str(i)))
+	spawn_points.shuffle()
+
+	var compositions = [
+		["basic", "basic"],
+		["basic", "tank"],
+		["ranged", "basic"],
+		["tank", "ranged", "basic"],
+		["ranged", "ranged"]
+	]
+	var composition = compositions[randi() % compositions.size()]
+
+	for i in range(composition.size()):
+		_spawn_enemy(composition[i], spawn_points[i].global_position)
+
+func _spawn_enemy(enemy_type, pos):
+	var enemy
+	if enemy_type == "ranged":
+		enemy = ranged_enemy_scene.instantiate()
+	else:
+		enemy = enemy_scene.instantiate()
+		if enemy_type == "tank":
+			enemy.max_hp = 90
+			enemy.speed = 50.0
+			enemy.contact_damage = 20
+			enemy.attack_cooldown = 1.8
+
+	get_node(room_container_path).add_child(enemy)
+	enemy.global_position = pos
+
+func _on_return_pressed():
+	get_tree().change_scene_to_file("res://scenes/lobby.tscn")

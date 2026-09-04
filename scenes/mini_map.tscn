@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d1qi4ljkwyy2a"]
+
+[ext_resource type="Script" uid="uid://bjexf33m7687m" path="res://scripts/minimap.gd" id="1_l143l"]
+
+[node name="MiniMap" type="Control" unique_id=277766206]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_right = 120.0
+offset_bottom = 160.0
+grow_horizontal = 0
+script = ExtResource("1_l143l")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=385725205]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.022601053, 0.022601053, 0.022601053, 0.25882354)

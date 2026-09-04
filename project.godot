@@ -11,13 +11,27 @@ config_version=5
 [application]
 
 config/name="Soul_slayer"
+run/main_scene="uid://bk4nqsglof8ya"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameData="*uid://dmvvboyva25em"
 
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor]
+
+version_control/main_scene="uid://bk4nqsglof8ya"
+
+[layer_names]
+
+2d_render/layer_2="player"
+2d_render/layer_3="enemies"
 
 [physics]
 
